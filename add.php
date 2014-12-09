@@ -28,8 +28,13 @@ if(!empty($_POST)){
         <meta charset="utf-8">
         <title>Add</title>
         <link rel="stylesheet" href="css/main.css">
+        
     </head>
-    <body style="display: table-caption;">
+    <body>
+        <ul>
+            <ul><a href='index.php'>Query data</a></ul>
+        </ul>
+        
         <form action="add.php" method="POST" autocomplete="off">
         <label>
             Title

@@ -1,8 +1,27 @@
 <?php
-require_once 'app/init.php';
+
+require_once 'vendor/autoload.php';
+require_once 'tw_autoloader.php';
+
+$es = new Elasticsearch\Client();
 
 if($_GET!=NULL){
     $q = $_GET['q'];
+    $hits = \Classes\curlFunction::Search($q);
+    foreach($hits as $hit){
+        print_r($hit);
+    }
+    //print_r($hits['hits']['hits']);
+    
+
+        
+        
+        
+    
+    
+    }
+
+    /*
     $params = array();
     $params['index'] = 'twitter';
     $params['type']  = 'drone';
@@ -12,7 +31,7 @@ if($_GET!=NULL){
     $results = $client->search($params);
     function searchForId($id, $array) {
         foreach ($array as $key => $val) {
-            if ($val['uid'] === $id) {
+            if ($val['hits'] === $id) {
                 return $key;
             }
     }
@@ -20,9 +39,9 @@ if($_GET!=NULL){
     }
     $hits = searchForId('hits', $results);
     print_r($hits);
+    */
     
-    
-}
+
 
 $table = '
         
@@ -64,6 +83,9 @@ $table = '
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
+        <ul>
+            <ul><a href='add.php'>Add data</a></ul>
+        </ul>
         <form action="index.php" method="get" autocomplete="off">
         <label>
             Search for something
@@ -78,74 +100,3 @@ $table = '
 </html>
 
 
-
-<?php
-/*
-    require 'tw_autoloader.php';
-    ini_set('display_errors', 'On');
-    require_once 'app/init.php';
-    ini_set("memory_limit", "-1");
-
-
-
-    $url = 'search/tweets.json';
-    $getfield = '?q=drone';
-    $settings = \Classes\Config::password();
-    $object3 = \Classes\TwitterFunctions::get_field($url, $getfield, $settings);
-    //$feed = \Classes\mentions::show_mentions($object3);
-    $client = new Elasticsearch\Client();
-
-$document = array(
-  'text' => 'John Smith',
-    'age' => 26,
-    'hobbies' => array('biking', 'surfing'),
-    'employer' => array(
-        'name' => 'MegaCorp',
-        'size' => 49293
-    )
-);
-
-$params['body']  = $document;
-$params['index'] = 'company';
-$params['type']  = 'employees';
-$params['id']    = 'JohnSmith';
-
-$ret = $client->index($params);
-
-
-
-$params = array();
-$params['index'] = 'company';
-$params['type']  = 'employees';
-$params['body']['query']['match']['name'] = 'John';
-
-//$results = $client->search($params);
-//print_r($results['hits']['hits']);
-
-    foreach($object3 as $obj){
-    foreach($obj as $tweet){
-        //print_r($tweet);
-        //$tweet = $tweet['text'];
-        $doc = array(
-            'tweet' => $tweet['text']
-            
-        
-            );
-        }
-        $params['body'] = $doc;
-        $params['index'] = 'twitter';
-        $params['type'] = 'drone';
-        $ret = $client->index($params); 
-        
-        
-    }
-    
-$params = array();
-$params['index'] = 'twitter';
-$params['type']  = 'drone';
-$params['body']['query']['match']['tweet'] = 'drone';
-$results = $client->search($params);
-print_r($results['hits']['hits']);
-
-*/
-?>

@@ -46,13 +46,13 @@ class curlFunction{
             curl_setopt($ci, CURLOPT_FORBID_REUSE, 0);
             curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'GET');
             $response = curl_exec($ci);
-            return(json_decode($response, TRUE));
+            return(json_decode($response,TRUE));
             
         
         }
     }
 
-$var = curlFunction::Import();
+//$var = curlFunction::Import();
 print_r($var);
 $search = curlFunction::Search('Elastic');
 print_r($search);
