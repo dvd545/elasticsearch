@@ -1,5 +1,5 @@
 <?php
-
+/*
 require_once 'vendor/autoload.php';
 require_once 'tw_autoloader.php';
 
@@ -7,11 +7,17 @@ $es = new Elasticsearch\Client();
 
 if($_GET!=NULL){
     $q = $_GET['q'];
-    $hits = \Classes\curlFunction::Search($q);
+    $results = \Classes\curlFunction::Search($q);
     foreach($hits as $hit){
-        print_r($hit);
-    }
+   
+
     //print_r($hits['hits']['hits']);
+    
+    foreach($results['hits']['hits'] as $hits){
+        print_r($hits);
+    
+    
+    }
     
 
         
@@ -39,7 +45,7 @@ if($_GET!=NULL){
     }
     $hits = searchForId('hits', $results);
     print_r($hits);
-    */
+    
     
 
 
@@ -70,7 +76,7 @@ $table = '
             $table .= "</table>";
             echo $table;
     
-
+*/
 ?>
 
 
@@ -93,6 +99,68 @@ $table = '
         </label>
         <input type="submit" value="Search">
     </form>
+    <div class=results>
+        <?php
+                require_once 'vendor/autoload.php';
+                require_once 'tw_autoloader.php';
+                    ini_set('display_errors', 'On');
+
+
+                $es = new Elasticsearch\Client();
+
+                if($_GET!=NULL){
+                    $q = $_GET['q'];
+                    /*
+                    //$vars = \Classes\curlFunction::Search($q);
+                    //print_r($hits['hits']['hits']);
+                    $new = array();
+                    $new = $vars["hits"];
+                    $sec = $new["hits"];
+                    print_r($sec);
+                    //foreach($hits as $hit){
+                    //    print_r($hit);
+                    //}
+                        
+                    $params = array();
+
+                    $params['index'] = 'twitter';
+                    $params['type']  = 'drone';
+                    $params['body']['query']['match']['message'] = $q;
+
+                    $results = $es->search($params);
+                   // print_r($results);
+                    $params = array();
+                    $print_r($results);
+                    //foreach($results['hits']['hits'] as $hits){
+                      //  print_r($hits);
+    
+    
+                //}
+                    */
+    $params['index'] = 'twitter';
+    $params['type']  = 'drone';
+    $params['body']['query']['match']['tweet'] = $q;
+    $client = new Elasticsearch\Client();
+
+    $results2 = $client->search($params);
+                    //print_r($results2);
+                
+               foreach($results2['hits']['hits'] as $hits){
+                   //print_r($hits);
+                    foreach($hits['_source'] as $message){
+
+                        echo $message . '<br>';
+                            
+                    }
+    
+    
+                }
+                }
+
+
+        
+            ?>
+        </div>
     
     
     
