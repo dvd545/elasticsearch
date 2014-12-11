@@ -26,31 +26,74 @@ if(!empty($_POST)){
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Add</title>
+        <title>Search</title>
         <link rel="stylesheet" href="css/main.css">
-        
     </head>
     <body>
         <ul>
-            <ul><a href='index.php'>Query data</a></ul>
+            <ul><a href='index.php'>Search data</a></ul>
         </ul>
-        
-        <form action="add.php" method="POST" autocomplete="off">
+        <form action="add.php" method="get" autocomplete="off">
         <label>
-            Title
-            <input type="text" name="title">
+            <h3>Search twitter for terms to add to the elastic search datdabase</h3>
+            <input type="text" name="q">
         </label>
-        <label>
-            Body
-            <textarea name="body" rows="8"></textarea>
-        </label>   
-        <label>
-            Keywords
-            <input type="text" name="keywords" placeholder="comme, separated"> 
-        </label>    
         <input type="submit" value="Add">
-        </form>
+    </form>
+    <div class=results>
+        <?php
+                    require_once 'vendor/autoload.php';
+                    require_once 'tw_autoloader.php';
+                    ini_set('display_errors', 'On');
+
+                if($_GET!=NULL){
+                    $term = $_GET['q'];
+                    $url = 'search/tweets.json';
+                    $getfield = '?q=' . $term;
+                    $settings = \Classes\Config::password();
+                    $obj = \Classes\TwitterFunctions::get_field($url, $getfield, $settings);
+                    foreach($obj as $items){
+                        foreach($items as $item){
+                            if(!empty($item)){
+                                $val = $item['text'];
+                                $feed_item = array("text" => $val);
+                                $add = \Classes\curlFunction::Import($feed_item);
+                                print_r($add);
+                                //echo $item['text'] . '<br>';
+
+                            }
+                        }
+
+                    }
+                    
+                    
+                    
+                    /*
+                    $client = new Elasticsearch\Client();
+                    $es = new Elasticsearch\Client();
+                   // $add = \Classes\curlFunction::Import();
+                    //print_r($add);
+                    $array_tweet = array();
+                    /*foreach($search['hits']['hits'] as $hits){
+                        foreach($hits['_source'] as $message){
+
+                            $array_tweet[] = $message;
+
+                                echo $message . '<br>';
+
+                        }
+
+
+                    }
+                        print_r($array_tweet);
+                        */
+                }
+            ?>
+        </div>
+    
     
     
     </body>
 </html>
+
+

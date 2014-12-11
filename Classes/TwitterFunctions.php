@@ -10,8 +10,9 @@ class TwitterFunctions{
         $twitter->setGetfield($getfield);
         $twitter->buildOauth($url_base, $requestMethod);
         $twitter_results=$twitter->performRequest();
+        return json_decode($twitter_results, TRUE);
         return $twitter_results;
-        //return json_decode($twitter_results, TRUE);
+
         
         
         
