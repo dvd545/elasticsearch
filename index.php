@@ -27,33 +27,7 @@
 
                 if($_GET!=NULL){
                     $q = $_GET['q'];
-                    /*
-                    
-    $params['index'] = 'twitter';
-    $params['type']  = 'drone';
-    $params['body']['query']['match']['tweet'] = $q;
-    $client = new Elasticsearch\Client();
-
-    $results2 = $client->search($params);
-                    //print_r($results2);
-                $array_tweet = array();
-               foreach($results2['hits']['hits'] as $hits){
-                   //print_r($hits);
-                    foreach($hits['_source'] as $message){
-
-                        $array_tweet[] = $message;
-                        
-                            echo $message . '<br>';
-                            
-                    }
-    
-    
-                }
-                    print_r($array_tweet);
-                }
-
-*/
-
+             
             $search = \Classes\curlFunction::Search($q);
                 $array_tweet = array();
                 foreach($search['hits']['hits'] as $hits){
@@ -68,7 +42,6 @@
     
                 }
                     print_r($array_tweet);
-                }
         
             ?>
         </div>

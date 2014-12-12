@@ -66,27 +66,6 @@ if(!empty($_POST)){
 
                     }
                     
-                    
-                    
-                    /*
-                    $client = new Elasticsearch\Client();
-                    $es = new Elasticsearch\Client();
-                   // $add = \Classes\curlFunction::Import();
-                    //print_r($add);
-                    $array_tweet = array();
-                    /*foreach($search['hits']['hits'] as $hits){
-                        foreach($hits['_source'] as $message){
-
-                            $array_tweet[] = $message;
-
-                                echo $message . '<br>';
-
-                        }
-
-
-                    }
-                        print_r($array_tweet);
-                        */
                 }
             ?>
         </div>
