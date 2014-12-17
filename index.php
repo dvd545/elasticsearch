@@ -73,7 +73,7 @@
             
                         $es = new Elasticsearch\Client();
 
-                        if($_GET!=NULL){
+                        if(isset($_GET['q'])){
                             $q = $_GET['q'];
                         
 
@@ -87,59 +87,52 @@
                                             </tr>
                                           </thead>
                                           <tbody>";
-                            if($search['hits']['total'] == 0){
-                                
-                                
-                                
-                                ?>
-                                <div class="termadding">
-                                <form action="index.php" method="post">
-                                    <?php 
-                                        $term = $_GET['q'];
-                                        echo "<button class='btn btn-primary btn-lg' type='submit' name='term'>Add                                           " . $term . " &raquo; </button>"; ?>
-                                        </form>
-                                    </div>
-                                <?php 
-                                if(isset($_POST['submit'])){
-                                    
-                                    $url = 'search/tweets.json';
-                                    $getfield = '?q=' . $term;
-                                    $settings = \Classes\Config::password();
-                                    $obj = \Classes\TwitterFunctions::get_field($url, $getfield, $settings);
-                                    foreach($obj as $items){
-                                        foreach($items as $item){
-                                            if(!empty($item)){
-                                                $val = $item['text'];
-                                                $feed_item = array("text" => $val);
-                                                $add = \Classes\curlFunction::Import($feed_item);
-                                                print_r($add);
-
-                                            }
-                                        }
-                                    }
-                                    
-                                    
-                                }
-                            }else{
+                            $term = $_GET['q'];
                             foreach($search['hits']['hits'] as $hits){
-                                foreach($hits['_source'] as $message){
-                                    $table .= "<tr><td>" . $message . "</td></tr>";
-
-                                }
-                            
-
+                                        foreach($hits['_source'] as $message){
+                                            $table .= "<tr><td>" . $message . "</td></tr>";
+                                        }
                             }
                             $table .= "</tbody></table>";
-                            echo $table;
-
-
+                            
+                            if($search['hits']['total'] == 0){ ?>
+                                <div class="alert alert-dismissable alert-danger">
+                                  <button type="button" class="close" data-dismiss="alert">×</button>
+                                  <h4>Sorry!</h4>
+                                  <p>We didnt find any search criteria for the terms you provided. Try clicking the button below to add the terms.</p>
+                                </div>
+                                    <?php    
+                                    echo "<a href='index.php?term=" . $term . "' class='btn btn-warning btn-lg'>Add " . $term . " &raquo; </a>";
+                            }else{
+                                echo $table;
                             }
                         }
-                            
-                     
-                            
 
-                    ?>
+
+                          
+
+                       if(isset($_GET['term'])) {
+                                $term = $_GET['term'];
+                                $url = 'search/tweets.json';
+                                $getfield = '?q=' . $term;
+                                $settings = \Classes\Config::password();
+                                $obj = \Classes\TwitterFunctions::get_field($url, $getfield, $settings);
+                                foreach($obj as $items){
+                                    foreach($items as $item){
+                                        if(!empty($item)){
+                                            $val = $item['text'];
+                                            $feed_item = array("text" => $val);
+                                            $add = \Classes\curlFunction::Import($feed_item);
+                                        }
+                                    }
+                                } ?>
+                            <div class="alert alert-dismissable alert-info">
+                              <button type="button" class="close" data-dismiss="alert">×</button>
+                              <strong>Success!</strong>  Twitter was searched for <?php echo $term; ?> and was added to the database. Try your search again!
+                            </div> 
+                        <?php } ?>
+                            
+            
 
     
 
